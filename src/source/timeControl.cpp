@@ -42,12 +42,12 @@ time_t getNtpTime()
 
     while (Udp.parsePacket() > 0)
         ; // discard any previously received packets
-    Serial.println("Transmit NTP Request");
+   // Serial.println("Transmit NTP Request");
     // get a random server from the pool
     WiFi.hostByName(ntpServerName, ntpServerIP);
-    Serial.print(ntpServerName);
-    Serial.print(": ");
-    Serial.println(ntpServerIP);
+   // Serial.print(ntpServerName);
+    //Serial.print(": ");
+    //Serial.println(ntpServerIP);
     sendNTPpacket(ntpServerIP);
     uint32_t beginWait = millis();
     while (millis() - beginWait < 1500)
@@ -55,7 +55,7 @@ time_t getNtpTime()
         int size = Udp.parsePacket();
         if (size >= NTP_PACKET_SIZE)
         {
-            Serial.println("Receive NTP Response");
+           // Serial.println("Receive NTP Response");
             Udp.read(packetBuffer, NTP_PACKET_SIZE); // read packet into the buffer
             unsigned long secsSince1900;
             // convert four bytes starting at location 40 to a long integer
@@ -66,7 +66,7 @@ time_t getNtpTime()
             return secsSince1900 - 2208988800UL + timeZone;
         }
     }
-    Serial.println("No NTP Response :-(");
+    // Serial.println("No NTP Response :-(");
     return 0; // return 0 if unable to get the time
 }
 

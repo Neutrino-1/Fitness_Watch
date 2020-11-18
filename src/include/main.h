@@ -4,3 +4,4 @@
 #include "./wifiControl.h"
 #include "./mpu.h"
 #include "./timeControl.h"
+#include "./sensor.h"

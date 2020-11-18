@@ -26,10 +26,12 @@ void loop()
     { //update the display only if time has changed
       prevDisplay = now();
       setDisplayTime(digitalClockValue());
-      Serial.println(digitalClockValue());
-      WiFi.mode(WIFI_OFF);
+      //Serial.println(digitalClockValue());
+      // WiFi.mode(WIFI_OFF);
     }
   }
+  calculateGraphics();
+  drawGraph();
   //calculateMotion();
   // put your main code here, to run repeatedly:
 }

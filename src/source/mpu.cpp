@@ -1,7 +1,7 @@
 #include "../include/mpu.h"
 
 Adafruit_MPU6050 mpu;
-
+int detectionCounter = 0;
 void setupMPU()
 {
     Serial.println("find MPU6050 chip");
@@ -49,12 +49,26 @@ Events calculateMotion()
     if (a.acceleration.z > 12)
     {
         Serial.println("UP MOTION");
+        delay(200);
         return UP_MOTION;
     }
     else if (a.acceleration.z < 7)
     {
         Serial.println("DOWN MOTION");
+        delay(200);
         return DOWN_MOTION;
+    }
+    else if (a.gyro.y < -1)
+    {
+        Serial.println("LEFT MOTION");
+        delay(200);
+        return LEFT_MOTION;
+    }
+    else if (a.gyro.y > 1)
+    {
+        Serial.println("RIGHT MOTION");
+        delay(200);
+        return RIGHT_MOTION;
     }
 
     delay(500);
