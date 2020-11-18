@@ -58,7 +58,7 @@ void drawGraph()
     display.display();
 }
 
-FrameCallback frames[] = {pulseRate, clock};
+FrameCallback frames[] = {clock, pulseRate};
 
 // how many frames are there?
 int frameCount = 2;
@@ -91,12 +91,13 @@ void clearDisplay()
 
 int16_t remainingTimeBudget()
 {
-    if (currentFrame != 0)
+    if (currentFrame != 1)
     {
         return ui.update();
     }
     else
     {
+        drawGraph();
         return -1;
     }
 }
@@ -106,9 +107,13 @@ void uiControl()
     ui.nextFrame();
     OLEDDisplayUiState *currentState = ui.getUiState();
     currentFrame = currentState->currentFrame; //This variable is inside the library!
+    Serial.println("current Frame : " + String(currentFrame));
 }
 
-void changeFrame(uint8_t change)
+void changeFrame()
 {
-    ui.switchToFrame(change);
+    clearDisplay();
+    ui.switchToFrame(!currentFrame);
+    OLEDDisplayUiState *currentState = ui.getUiState();
+    currentFrame = currentState->currentFrame; //This variable is inside the library!
 }

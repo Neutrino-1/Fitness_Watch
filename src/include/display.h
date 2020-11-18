@@ -13,6 +13,8 @@ void setDisplayTime(String currentTime);
 
 void uiControl();
 
+void changeFrame();
+
 void drawGraph();
 
 void setGraphingValue(int16_t x, int16_t y, int16_t lx, int16_t ly, int bpm);
