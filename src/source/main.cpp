@@ -10,7 +10,7 @@ void setup()
   startWiFiManager();
   initDispaly();
   delay(100);
-  //setupMPU();
+  setupMPU();
   while (wifiConnected())
     ;
   startTime();
@@ -22,23 +22,26 @@ void loop()
   if (remainingTimeBudget() > 0)
   {
   }
+
+  if (pressed)
+  {
+    changeFrame();
+    pressed = false;
+  }
+
   if (timeStatus() != timeNotSet)
   {
     if (now() != prevDisplay)
     { //update the display only if time has changed
       prevDisplay = now();
       setDisplayTime(digitalClockValue());
-      //Serial.println(digitalClockValue());
+      Serial.println(digitalClockValue());
       // WiFi.mode(WIFI_OFF);
     }
   }
+
   calculateGraphics();
-  if (pressed)
-  {
-    changeFrame();
-    pressed = false;
-  }
-  //calculateMotion();
+  calculateMotion();
   // put your main code here, to run repeatedly:
 }
 

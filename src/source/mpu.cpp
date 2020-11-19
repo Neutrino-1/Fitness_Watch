@@ -2,6 +2,16 @@
 
 Adafruit_MPU6050 mpu;
 int detectionCounter = 0;
+int mpuThresh = 40;
+
+int counterX = 0;
+int counterY = 0;
+int counterZ = 0;
+
+int numberOfTimes = 0;
+
+unsigned long int timer = 0;
+
 void setupMPU()
 {
     Serial.println("find MPU6050 chip");
@@ -24,53 +34,44 @@ Events calculateMotion()
     sensors_event_t a, g, temp;
     mpu.getEvent(&a, &g, &temp);
 
-    // Serial.print("Acceleration X: ");
-    // Serial.print(a.acceleration.x);
-    // Serial.print(", Y: ");
-    // Serial.print(a.acceleration.y);
-    // Serial.print(", Z: ");
-    // Serial.print(a.acceleration.z);
-    // Serial.println(" m/s^2");
+    counterX = a.acceleration.x > 25 ? (counterX + 1) : (counterX + 0);
+    counterY = a.acceleration.y > 25 ? (counterY + 1) : (counterY + 0);
+    counterZ = a.acceleration.z > 25 ? (counterZ + 1) : (counterZ + 0);
 
-    // Serial.print("Rotation X: ");
-    // Serial.print(g.gyro.x);
-    // Serial.print(", Y: ");
-    // Serial.print(g.gyro.y);
-    // Serial.print(", Z: ");
-    // Serial.print(g.gyro.z);
-    // Serial.println(" rad/s");
-
-    // Serial.print("Temperature: ");
-    // Serial.print(temp.temperature);
-    // Serial.println(" degC");
-
-    // Serial.println("");
-
-    if (a.acceleration.z > 12)
+    if (jerkDetection())
     {
-        Serial.println("UP MOTION");
-        delay(200);
-        return UP_MOTION;
-    }
-    else if (a.acceleration.z < 7)
-    {
-        Serial.println("DOWN MOTION");
-        delay(200);
-        return DOWN_MOTION;
-    }
-    else if (a.gyro.y < -1)
-    {
-        Serial.println("LEFT MOTION");
-        delay(200);
-        return LEFT_MOTION;
-    }
-    else if (a.gyro.y > 1)
-    {
-        Serial.println("RIGHT MOTION");
-        delay(200);
-        return RIGHT_MOTION;
+        Serial.println("Jerk detected!");
+        counterX = 0;
+        counterY = 0;
+        counterZ = 0;
     }
 
-    delay(500);
     return LEFT_MOTION;
+}
+
+bool jerkDetection()
+{
+    if (millis() - timer > 3000)
+    {
+        timer = millis();
+        counterX = 0;
+        counterY = 0;
+        counterZ = 0;
+    }
+    if (counterX > 15)
+    {
+        Serial.println("X : " + String(counterX));
+        return true;
+    }
+    else if (counterY > 15)
+    {
+        Serial.println("Y : " + String(counterY));
+        return true;
+    }
+    else if (counterZ > 15)
+    {
+        Serial.println("Z : " + String(counterZ));
+        return true;
+    }
+    return false;
 }

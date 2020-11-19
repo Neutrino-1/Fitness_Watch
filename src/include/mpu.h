@@ -12,3 +12,4 @@ enum Events
 
 void setupMPU();
 Events calculateMotion();
+bool jerkDetection();

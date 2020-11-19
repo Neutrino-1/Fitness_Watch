@@ -35,7 +35,7 @@ void calculateGraphics()
         {
             BPM = ThisTime - LastTime;
             BPM = int(60 / (float(BPM) / 1000));
-            Serial.println(BPM);
+            //Serial.println(BPM);
             BPMTiming = false;
             BeatComplete = false;
         }
