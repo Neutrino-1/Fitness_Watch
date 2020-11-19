@@ -1,5 +1,5 @@
 #include "../include/main.h"
-time_t prevDisplay = 0; // when the digital clock was displayed
+
 void setup()
 {
   // put your setup code here, to run once:
@@ -15,6 +15,7 @@ void setup()
     ;
   startTime();
   initUI();
+  idleTime = millis();
 }
 
 void loop()
@@ -35,17 +36,40 @@ void loop()
     { //update the display only if time has changed
       prevDisplay = now();
       setDisplayTime(digitalClockValue());
-      Serial.println(digitalClockValue());
+      //Serial.println(digitalClockValue());
       // WiFi.mode(WIFI_OFF);
     }
   }
 
   calculateGraphics();
-  calculateMotion();
+  if (calculateMotion())
+  {
+    if (!displayOnStatus)
+    {
+      onDispaly();
+      displayOnStatus = true;
+    }
+    idleTime = millis();
+  }
+  else if (!calculateMotion() && displayOnStatus && millis() - idleTime > 15000)
+  {
+    displayOnStatus = false;
+    turnOffDisplay();
+    idleTime = millis();
+  }
+
   // put your main code here, to run repeatedly:
 }
 
 ICACHE_RAM_ATTR void ISR()
 {
-  pressed = true;
+  if (!displayOnStatus)
+  {
+    onDispaly();
+    displayOnStatus = false;
+  }
+  else
+  {
+    pressed = true;
+  }
 }

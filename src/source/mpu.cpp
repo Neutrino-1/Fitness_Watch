@@ -12,6 +12,8 @@ int numberOfTimes = 0;
 
 unsigned long int timer = 0;
 
+bool guestureStarted = false;
+
 void setupMPU()
 {
     Serial.println("find MPU6050 chip");
@@ -29,7 +31,7 @@ void setupMPU()
     delay(100);
 }
 
-Events calculateMotion()
+boolean calculateMotion()
 {
     sensors_event_t a, g, temp;
     mpu.getEvent(&a, &g, &temp);
@@ -44,9 +46,23 @@ Events calculateMotion()
         counterX = 0;
         counterY = 0;
         counterZ = 0;
+        return true;
     }
 
-    return LEFT_MOTION;
+    if (a.gyro.x > 5 && (a.acceleration.y < 3 || a.acceleration.y > -3)) //Detect motion only when Y axis parallel to chest
+    {
+        guestureStarted = true;
+    }
+    else if (a.gyro.x < -5)
+    {
+        if (guestureStarted)
+        {
+            guestureStarted = false;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool jerkDetection()

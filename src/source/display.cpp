@@ -110,6 +110,16 @@ void uiControl()
     Serial.println("current Frame : " + String(currentFrame));
 }
 
+void turnOffDisplay()
+{
+    display.displayOff();
+}
+
+void onDispaly()
+{
+    display.displayOn();
+}
+
 void changeFrame()
 {
     clearDisplay();

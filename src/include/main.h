@@ -9,5 +9,8 @@
 #define navButton 0
 
 volatile bool pressed = false;
+unsigned long idleTime = 0;
+volatile bool displayOnStatus = true;
+time_t prevDisplay = 0; // when the digital clock was displayed
 
 ICACHE_RAM_ATTR void ISR();
