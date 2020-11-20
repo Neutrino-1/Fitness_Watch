@@ -7,7 +7,6 @@
 #include "./sensor.h"
 
 #define navButton 0
-
 volatile bool pressed = false;
 unsigned long idleTime = 0;
 volatile bool displayOnStatus = true;

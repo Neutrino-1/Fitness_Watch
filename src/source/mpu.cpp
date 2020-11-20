@@ -1,6 +1,7 @@
 #include "../include/mpu.h"
-
 Adafruit_MPU6050 mpu;
+EMailSender emailSend("smedicalbox@gmail.com", "ISE_Project");
+
 int detectionCounter = 0;
 int mpuThresh = 40;
 
@@ -9,7 +10,7 @@ int counterY = 0;
 int counterZ = 0;
 
 int numberOfTimes = 0;
-
+int warningCounter = 0;
 unsigned long int timer = 0;
 
 bool guestureStarted = false;
@@ -43,13 +44,22 @@ boolean calculateMotion()
     if (jerkDetection())
     {
         Serial.println("Jerk detected!");
+        warningCounter++;
         counterX = 0;
         counterY = 0;
         counterZ = 0;
+        digitalWrite(14, HIGH);
+        delay(1000); //use millis to make this efficient!
+        digitalWrite(14, LOW);
+        if (warningCounter >= 3)
+        {
+            sendMail(warningCounter);
+            warningCounter = 0;
+        }
         return true;
     }
 
-    if (a.gyro.x > 5 && (a.acceleration.y < 3 || a.acceleration.y > -3)) //Detect motion only when Y axis parallel to chest
+    if (a.gyro.x > 5 && (a.acceleration.y < 3 || a.acceleration.y > -3)) //Detect motion only when Y axis parallel to ground
     {
         guestureStarted = true;
     }
@@ -90,4 +100,15 @@ bool jerkDetection()
         return true;
     }
     return false;
+}
+
+bool sendMail(int noOfWarning)
+{
+    EMailSender::EMailMessage message;
+    message.subject = "He is cheating!";
+    message.message = "Warnings issued :" + String(noOfWarning) + "<br><br><br>SUS<br><br><br> Regards, <br>Your Faithful N-sfw";
+
+    EMailSender::Response resp = emailSend.send("srinivasanm329@gmail.com", message);
+
+    return resp.status;
 }

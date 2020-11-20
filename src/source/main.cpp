@@ -4,6 +4,7 @@ void setup()
 {
   // put your setup code here, to run once:
   pinMode(navButton, INPUT_PULLUP);
+  pinMode(14, OUTPUT);
   attachInterrupt(digitalPinToInterrupt(0), ISR, FALLING);
   Serial.begin(115200);
   Serial.println("Starting...");
