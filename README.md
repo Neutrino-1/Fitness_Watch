@@ -3,12 +3,12 @@
 A fitness watch based on esp12E with arudino frame work.
 
 Current Features inlcudes:
-Auto display turn on and turn off
-Motion detection
-Heart Rate sensor
-NTP time sync
-Haptic feedback
-SMTP email functionality
+* Auto display turn on and turn off
+* Motion detection
+* Heart Rate sensor
+* NTP time sync
+* Haptic feedback
+* SMTP email functionality
 
 ![Fitness watch final build](https://github.com/Neutrino-1/Fitness_Watch/blob/master/circuit/fitness%20watch.png)
 
