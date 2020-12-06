@@ -10,7 +10,7 @@ Current Features inlcudes:
 * Haptic feedback
 * SMTP email functionality
 
-![Fitness watch final build](https://github.com/Neutrino-1/Fitness_Watch/blob/master/circuit/fitness%20watch.png)
+![Fitness watch final build](https://github.com/Neutrino-1/Fitness_Watch/blob/master/circuit/fitness%20watch.gif)
 
 ### Getting Started
 
